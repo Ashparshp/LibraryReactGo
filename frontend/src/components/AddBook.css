@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.add-book-container {
+  background: linear-gradient(to right, #2b2132, #422c46);
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+}
+
+.add-book-heading {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #fff;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.add-book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.input-group {
+  position: relative;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.input-group input {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #007BFF;
+}
+
+.input-group input[type="number"] {
+  width: auto;
+}
+
+.input-error {
+  border-color: #dc3545 !important;
+  animation: shake 0.3s ease-in-out;
+}
+
+.error-message,
+.error-text {
+  color: #a39393;
+  font-weight: bold;
+  margin-top: 5px;
+  font-size: 0.875rem;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.add-book-button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  background: linear-gradient(to right, #000000, #231f2c);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  align-self: center;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-book-button:hover {
+  background: linear-gradient(to right, #0c0b0a, #442a32);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+
+.add-book-button.loading {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
