@@ -2,23 +2,26 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './BookList.css';
 
-const BookList = ({ books, fetchBooks }) => {
+const BookList = ({ books, fetchBooks, updateTotalBooks }) => {
   const [visibleBooks, setVisibleBooks] = useState(6);
   const [sortOption, setSortOption] = useState('title');
 
   const borrowBook = async (isbn) => {
     await axios.put(`http://localhost:8080/borrow_book/${isbn}`);
     fetchBooks();
+    updateTotalBooks();
   };
 
   const returnBook = async (isbn) => {
     await axios.put(`http://localhost:8080/return_book/${isbn}`);
     fetchBooks();
+    updateTotalBooks();
   };
 
   const removeBook = async (isbn) => {
     await axios.delete(`http://localhost:8080/remove_book/${isbn}`);
     fetchBooks();
+    updateTotalBooks();
   };
 
   const loadMoreBooks = () => {
@@ -56,15 +59,24 @@ const BookList = ({ books, fetchBooks }) => {
         sortedBooks.slice(0, visibleBooks).map((book) => (
           <div key={book.isbn} className="book-item">
             <p>
-              <span className="book-info">Title:</span> {book.title}<br />
-              <span className="book-info">Author:</span> {book.author}<br />
-              <span className="book-info">ISBN:</span> {book.isbn}<br />
+              <span className="book-info">Title:</span> {book.title}
+              <br />
+              <span className="book-info">Author:</span> {book.author}
+              <br />
+              <span className="book-info">ISBN:</span> {book.isbn}
+              <br />
               <span className="book-info">Quantity:</span> {book.quantity}
             </p>
             <div className="book-buttons">
-              <button className="borrow-button" onClick={() => borrowBook(book.isbn)}>Borrow</button>
-              <button className="return-button" onClick={() => returnBook(book.isbn)}>Return</button>
-              <button className="remove-button" onClick={() => removeBook(book.isbn)}>Remove</button>
+              <button className="borrow-button" onClick={() => borrowBook(book.isbn)}>
+                Borrow
+              </button>
+              <button className="return-button" onClick={() => returnBook(book.isbn)}>
+                Return
+              </button>
+              <button className="remove-button" onClick={() => removeBook(book.isbn)}>
+                Remove
+              </button>
             </div>
           </div>
         ))
@@ -73,7 +85,9 @@ const BookList = ({ books, fetchBooks }) => {
       )}
       {sortedBooks.length > visibleBooks && (
         <div className="load-more-container">
-          <button className="load-more-button" onClick={loadMoreBooks}>Load More</button>
+          <button className="load-more-button" onClick={loadMoreBooks}>
+            Load More
+          </button>
         </div>
       )}
     </div>

@@ -4,11 +4,13 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -27,7 +29,12 @@ type Book struct {
 }
 
 func main() {
-	dsn := "host=localhost user=library_user password=password dbname=library_db port=5432 sslmode=disable"
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
+	dsn := os.Getenv("POSTGRES_DSN")
 	db, err = gorm.Open("postgres", dsn)
 	if err != nil {
 		log.Fatalf("failed to connect to database: %v", err)
@@ -38,8 +45,7 @@ func main() {
 		log.Fatalf("failed to migrate database: %v", err)
 	}
 
-	// Connect to MongoDB
-	mongoURI := "mongodb+srv://ashparsh:nVksHlUQaCLzVdfG@cluster0.bepaxx0.mongodb.net/"
+	mongoURI := os.Getenv("MONGO_URI")
 	clientOptions := options.Client().ApplyURI(mongoURI)
 	mongoClient, err = mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
@@ -89,10 +95,8 @@ func searchBook(c *gin.Context) {
 	query := c.Query("query")
 	var books []Book
 
-	// Search in PostgreSQL
 	db.Where("title LIKE ? OR author LIKE ? OR isbn LIKE ?", "%"+query+"%", "%"+query+"%", "%"+query+"%").Find(&books)
 
-	// Search in MongoDB
 	collection := mongoClient.Database("library_db").Collection("books")
 	filter := bson.M{"$or": []bson.M{
 		{"title": bson.M{"$regex": query, "$options": "i"}},
@@ -207,5 +211,5 @@ func getTotalBooks(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"totalBooks": totalBooks + int(count)})
+	c.JSON(http.StatusOK, gin.H{"totalBooks": (totalBooks + int(count)) / 2})
 }

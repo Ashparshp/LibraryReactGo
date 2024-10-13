@@ -23,6 +23,10 @@ function App() {
     }
   };
 
+  const updateTotalBooks = async () => {
+    await fetchTotalBooks();
+  };
+
   useEffect(() => {
     fetchBooks();
     fetchTotalBooks();
@@ -30,14 +34,15 @@ function App() {
 
   return (
     <div className="app-container gradient-97">
-
       <div className="title-container">
         <h1 className="app-title">Library Management System</h1>
-        <p className="total-books">Total Books Available: <span className="total-books-number">{totalBooks}</span></p>
+        <p className="total-books">
+          Total Books Available: <span className="total-books-number">{totalBooks}</span>
+        </p>
       </div>
       <SearchBooks setBooks={setBooks} />
-      <BookList books={books} fetchBooks={fetchBooks} />
-      <AddBook fetchBooks={fetchBooks} />
+      <BookList books={books} fetchBooks={fetchBooks} updateTotalBooks={updateTotalBooks} />
+      <AddBook fetchBooks={fetchBooks} updateTotalBooks={updateTotalBooks} />
     </div>
   );
 }

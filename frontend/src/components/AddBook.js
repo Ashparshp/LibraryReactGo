@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './AddBook.css';
 
-const AddBook = ({ fetchBooks }) => {
+const AddBook = ({ fetchBooks, updateTotalBooks }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [isbn, setIsbn] = useState('');
@@ -44,6 +44,7 @@ const AddBook = ({ fetchBooks }) => {
     try {
       await axios.post('http://localhost:8080/add_book', { title, author, isbn, quantity: parseInt(quantity) });
       fetchBooks();
+      updateTotalBooks(); // Update total books count
       setTitle('');
       setAuthor('');
       setIsbn('');
