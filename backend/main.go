@@ -18,7 +18,6 @@ import (
 
 var db *gorm.DB
 var mongoClient *mongo.Client
-var err error
 
 type Book struct {
 	ID       uint   `json:"id" gorm:"primary_key"`
